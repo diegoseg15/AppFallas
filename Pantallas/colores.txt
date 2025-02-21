@@ -1,0 +1,3 @@
+Rojo #F25041
+Amarillo #F2B441
+Azul #5852F2
