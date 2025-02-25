@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./Home";
 import { Ionicons } from "@expo/vector-icons";
 import Mapa from "./Mapa";
+import Profile from "./Profile";
+
 
 export default function Main({ route, navigation }) {
     const Tab = createBottomTabNavigator();
@@ -48,8 +50,8 @@ export default function Main({ route, navigation }) {
             <Tab.Screen name="Home" component={Home} initialParams={{ usuario }} />
             <Tab.Screen name="Scan" component={Home} initialParams={{ usuario }} />
             <Tab.Screen name="Mapa" component={Mapa}  />
-            <Tab.Screen name="Visitado"component={Home}initialParams={{ usuario }}/>
-            <Tab.Screen name="Perfil" component={Home} initialParams={{ usuario }} />
+            <Tab.Screen name="Visitado"component={Home} initialParams={{ usuario }}/>
+            <Tab.Screen name="Perfil" component={Profile} initialParams={{ usuario }} />
         </Tab.Navigator>
     );
 }
