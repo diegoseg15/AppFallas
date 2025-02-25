@@ -1,12 +1,12 @@
 
-import Login from './Pantallas/Login';
+import Login from './Screens/Login';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import Home from './Pantallas/Home';
-import NavigationAppDemo from './Pantallas/NavigationAppDemo';
-import Main from './Pantallas/Main';
-import Lista from './Pantallas/Lista';
-import DetalleFalla from './Pantallas/DetalleFalla';
+import Home from './Screens/Home';
+import NavigationAppDemo from './Screens/NavigationAppDemo';
+import Main from './Screens/Main';
+import Lista from './Screens/Lista';
+import DetalleFalla from './Screens/DetalleFalla';
 
 export default function App() {
   const Stack = createStackNavigator();
