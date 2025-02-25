@@ -74,7 +74,7 @@ const fallas = [
   }
 ]
 
-export default function Visited () {
+export default function Visited ({ navigation }) {
   const [favorites, setFavorites] = useState([])
 
   const toggleFavorite = id => {
@@ -86,14 +86,16 @@ export default function Visited () {
   return (
     <ScrollView style={styles.container}>
       {fallas.map(falla => (
-        <View key={falla.id} style={styles.card}>
+        <View key={falla.id_falla} style={styles.card}>
           <View style={styles.header}>
             <Text style={styles.title}>{falla.nombre}</Text>
-            <TouchableOpacity onPress={() => toggleFavorite(falla.id)}>
+            <TouchableOpacity onPress={() => toggleFavorite(falla.id_falla)}>
               <Ionicons
                 name='heart'
                 size={24}
-                color={favorites.includes(falla.id) ? '#F25041' : '#F2B441'}
+                color={
+                  favorites.includes(falla.id_falla) ? '#F25041' : '#F2B441'
+                }
               />
             </TouchableOpacity>
           </View>
@@ -109,7 +111,7 @@ export default function Visited () {
             {falla.lema}
           </Text>
           <TouchableOpacity
-            onPress={() => toggleExpand(falla.id)}
+            onPress={() => navigation.navigate('DetalleFalla', { item: falla })}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Más información</Text>
