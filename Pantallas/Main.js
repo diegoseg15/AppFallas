@@ -4,6 +4,7 @@ import Home from "./Home";
 import { Ionicons } from "@expo/vector-icons";
 import Mapa from "./Mapa";
 import Profile from "./Profile";
+import Visited from "./Visited";
 
 
 export default function Main({ route, navigation }) {
@@ -50,7 +51,7 @@ export default function Main({ route, navigation }) {
             <Tab.Screen name="Home" component={Home} initialParams={{ usuario }} />
             <Tab.Screen name="Scan" component={Home} initialParams={{ usuario }} />
             <Tab.Screen name="Mapa" component={Mapa}  />
-            <Tab.Screen name="Visitado"component={Home} initialParams={{ usuario }}/>
+            <Tab.Screen name="Visitado"component={Visited} initialParams={{ usuario }}/>
             <Tab.Screen name="Perfil" component={Profile} initialParams={{ usuario }} />
         </Tab.Navigator>
     );
