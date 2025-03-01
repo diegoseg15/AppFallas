@@ -1,147 +1,115 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList } from "react-native";
-import Lista from "./Lista";
+import React, { useEffect, useRef, useState } from 'react'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
+import MapViewComponent from '../components/MapViewComponent'
+import ItemList from '../components/ItemList'
+import SegmentedControl from '../components/SegmentedControl'
+import CategoryList from '../components/CategoryList'
+import TooltipModal from '../components/TooltipModal'
+import * as Location from 'expo-location'
 
-export default function Mapa({navigation}) {
-  const [vista, setVista] = useState("mapa");
-  const [mostrarCategorias, setMostrarCategorias] = useState(false); // Estado para mostrar/ocultar categorías
-  
-  const categorias = [
-    "Tecnología",
-    "Ciencia",
-    "Salud",
-    "Arte",
-    "Deportes",
-    "Viajes",
-  ];
+export default function Mapa ({ navigation }) {
+  const [vista, setVista] = useState('mapa')
+  const [mostrarCategorias, setMostrarCategorias] = useState(false)
+  const mapView = useRef(null)
+  const [newRegion, setNewRegion] = useState(null)
+  const [VLCitems, setVLCitems] = useState([])
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [dataItem, setDataItem] = useState(null)
+  const [permission, setPermission] = useState(null)
+
+  const initialRegion = {
+    latitude: 39.4699,
+    longitude: -0.3763,
+    latitudeDelta: 2,
+    longitudeDelta: 2
+  }
+
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status === 'granted') {
+        setPermission(true)
+        let location = await Location.getCurrentPositionAsync({})
+        let region = {
+          latitude: parseFloat(location.coords.latitude),
+          longitude: parseFloat(location.coords.longitude),
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01
+        }
+        setNewRegion(region)
+        mapView.current.animateToRegion(region, 2000)
+      } else {
+        setPermission(false)
+        alert('Permission to access location was denied')
+      }
+    }
+
+    getCurrentLocation()
+    loadData()
+  }, [])
+
+  const loadData = () => {
+    fetch(
+      'https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/falles-fallas/records?limit=-1'
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        setVLCitems(responseJson.results)
+      })
+  }
 
   const toggleCategorias = () => {
-    setMostrarCategorias(!mostrarCategorias);
-  };
+    setMostrarCategorias(!mostrarCategorias)
+  }
+
+  const closeTooltip = () => {
+    setShowTooltip(false)
+    setDataItem(null)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Botones "Mapa" y "Lista" centrados */}
-      <View style={styles.segmentedControl}>
-        <TouchableOpacity
-          style={[styles.button, vista === "mapa" && styles.activeButton]}
-          onPress={() => setVista("mapa")}
-        >
-          <Text style={[styles.buttonText, vista === "mapa" && styles.activeText]}>Mapa</Text>
-        </TouchableOpacity>
+      <SegmentedControl vista={vista} setVista={setVista} />
 
-        <TouchableOpacity
-          style={[styles.button, vista === "lista" && styles.activeButton]}
-          onPress={() => setVista("lista")}
-        >
-          <Text style={[styles.buttonText, vista === "lista" && styles.activeText]}>Lista</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Contenido según la selección */}
       <View style={styles.contentContainer}>
-        {vista === "mapa" ? (
-          <Text style={styles.content}>🗺️ Aquí irá el mapa 📍</Text>
+        {vista === 'mapa' ? (
+          <MapViewComponent
+            mapViewRef={mapView}
+            initialRegion={initialRegion}
+            newRegion={newRegion}
+            VLCitems={VLCitems}
+            setShowTooltip={setShowTooltip}
+            setDataItem={setDataItem}
+          />
         ) : (
-            // navigation.navigate("Lista",  navigation)
-            <Lista navigation={navigation}/>
+          <ItemList navigation={navigation} VLCitems={VLCitems} />
         )}
       </View>
 
-      {/* Botón para desplegar categorías */}
-      <TouchableOpacity style={styles.categoriasButton} onPress={toggleCategorias}>
-        <Text style={styles.categoriasButtonText}>Categorías</Text>
-      </TouchableOpacity>
+      <CategoryList
+        mostrarCategorias={mostrarCategorias}
+        toggleCategorias={toggleCategorias}
+      />
 
-      {/* Mostrar lista de categorías si 'mostrarCategorias' es verdadero */}
-      {mostrarCategorias && (
-        <View style={styles.categoriasContainer}>
-          <FlatList
-            data={categorias}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <Text style={styles.categoriaItem}>{item}</Text>
-            )}
-          />
-        </View>
-      )}
+      <TooltipModal
+        showTooltip={showTooltip}
+        closeTooltip={closeTooltip}
+        dataItem={dataItem}
+      />
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-  },
-  segmentedControl: {
-    flexDirection: "row",
-    backgroundColor: "#F25041",
-    borderRadius: 25,
-    padding: 4,
-    width: 200,
-    alignSelf: "center", // Centramos el contenedor de botones
-    marginTop: 5, // Espacio superior para que no se pegue a la parte superior
-  },
-  button: {
-    flex: 1,
-    paddingVertical: 5,
-    alignItems: "center",
-    backgroundColor: "#F25041", // Fondo de los botones no seleccionados
-    borderRadius: 20,
-  },
-  activeButton: {
-    backgroundColor: "white", // Fondo blanco para el botón seleccionado
-  },
-  buttonText: {
-    color: "white", // Texto blanco por defecto
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  activeText: {
-    color: "#F25041", // Color de texto para el botón seleccionado
+    backgroundColor: 'white'
   },
   contentContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 7, // Espacio para el botón segmentado
-    backgroundColor: "white",
-  },
-  content: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  categoriasButton: {
-    position: "absolute",
-    bottom: 8,
-    alignSelf: "center", // Asegura que el botón esté centrado
-    paddingVertical: 10,
-    paddingHorizontal: 20, // Reducción del tamaño horizontal
-    backgroundColor: "#F25041",
-    alignItems: "center",
-    borderRadius: 25,
-  },
-  categoriasButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  categoriasContainer: {
-    position: "absolute",
-    bottom: 70,
-    left: 0,
-    right: 0,
-    backgroundColor: "white",
-    padding: 20,
-    borderTopWidth: 1,
-    borderColor: "#ccc",
-  },
-  categoriaItem: {
-    fontSize: 16,
-    color: "#F25041",
-    fontWeight: "bold",
-    paddingVertical: 5,
-  },
-});
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 7,
+    backgroundColor: 'white'
+  }
+})
