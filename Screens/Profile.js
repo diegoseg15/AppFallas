@@ -6,10 +6,10 @@ export default function Profile ({ route }) {
   const { usuario } = route.params
 
   const menu = [
-    { title: 'Editar Perfíl', icon: 'person', screen: 'edit-profile' },
-    { title: 'Ubicación', icon: 'location', screen: 'location' },
+    { title: 'Editar Perfíl', icon: 'person', screen: 'EditProfile' },
+    { title: 'Ubicación', icon: 'location', screen: 'Location' },
     { title: 'Notificaciones', icon: 'notifications', action: 'notifications' },
-    { title: 'Favoritos', icon: 'heart', screen: 'favorites' },
+    { title: 'Favoritos', icon: 'heart', screen: 'Favorites' },
     { title: 'Contraseña', icon: 'key', screen: 'password' },
     { title: 'Idioma', icon: 'language', action: 'language' }
   ]
@@ -42,7 +42,15 @@ export default function Profile ({ route }) {
         {menu.map(
           (item, index) =>
             index > 1 && (
-              <TouchableOpacity key={index} style={styles.menuItem}>
+              <TouchableOpacity
+                key={index}
+                style={styles.menuItem}
+                onPress={() =>
+                  item.screen
+                    ? navigation.navigate(item.screen, { title: item.title })
+                    : console.log(item.action)
+                }
+              >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Ionicons name={item.icon} style={styles.icon} />
                   <Text style={styles.menuItemText}>{item.title}</Text>
