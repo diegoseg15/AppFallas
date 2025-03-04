@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 import MapViewComponent from '../components/MapViewComponent'
-import ItemList from '../components/ItemList'
 import SegmentedControl from '../components/SegmentedControl'
 import CategoryList from '../components/CategoryList'
 import TooltipModal from '../components/TooltipModal'
 import * as Location from 'expo-location'
+import Lista from './Lista'
 
 export default function Mapa ({ navigation }) {
   const [vista, setVista] = useState('mapa')
@@ -82,7 +82,7 @@ export default function Mapa ({ navigation }) {
             setDataItem={setDataItem}
           />
         ) : (
-          <ItemList navigation={navigation} VLCitems={VLCitems} />
+          <Lista navigation={navigation} VLCitems={VLCitems} />
         )}
       </View>
 
