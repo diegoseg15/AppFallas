@@ -1,4 +1,5 @@
 import React from 'react'
+import { Image, Platform } from 'react-native'
 import { Marker } from 'react-native-maps'
 
 export default function Markers ({ item, setShowTooltip, setDataItem }) {
@@ -25,7 +26,14 @@ export default function Markers ({ item, setShowTooltip, setDataItem }) {
         title={item.nombre}
         icon={require('../assets/marker-icon.png')}
         onPress={handleMarkerPress} // Manejar el clic en el Marker
-      />
+      >
+        {/* {Platform.OS !== 'android' && (
+          <Image
+            source={require('../assets/marker-icon.png')}
+            style={{ width: 50, height: 50 }}
+          />
+        )} */}
+      </Marker>
     </>
   )
 }
