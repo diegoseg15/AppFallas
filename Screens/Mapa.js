@@ -16,6 +16,7 @@ export default function Mapa ({ navigation }) {
   const [showTooltip, setShowTooltip] = useState(false)
   const [dataItem, setDataItem] = useState(null)
   const [permission, setPermission] = useState(null)
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas"); // Estado para la categoría
 
   const initialRegion = {
     latitude: 39.4699,
@@ -80,15 +81,21 @@ export default function Mapa ({ navigation }) {
             VLCitems={VLCitems}
             setShowTooltip={setShowTooltip}
             setDataItem={setDataItem}
+            categoriaSeleccionada={categoriaSeleccionada}
           />
         ) : (
-          <Lista navigation={navigation} VLCitems={VLCitems} />
+          <Lista 
+          navigation={navigation} 
+          VLCitems={VLCitems}
+          categoriaSeleccionada={categoriaSeleccionada}
+           />
         )}
       </View>
 
       <CategoryList
         mostrarCategorias={mostrarCategorias}
         toggleCategorias={toggleCategorias}
+        setCategoriaSeleccionada={setCategoriaSeleccionada}
       />
 
       <TooltipModal
@@ -103,7 +110,7 @@ export default function Mapa ({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: '#F5F5F5'
   },
   contentContainer: {
     flex: 1,

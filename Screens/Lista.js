@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   StyleSheet,
   View,
@@ -8,103 +8,115 @@ import {
   FlatList,
   TouchableOpacity
 } from 'react-native'
-import { Ionicons } from '@expo/vector-icons' // Importa Ionicons para la flecha
+import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
-export default function Lista ({ navigation, VLCitems }) {
-//   const [VLCitems, setVLCitems] = useState([]);
-
-
-
-
-  // useEffect(() => {
-  //     loadData();
-  // }, []);
-
-  // // https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/valenbisi-disponibilitat-valenbisi-dsiponibilidad/exports/geojson?lang=es&timezone=Europe%2FBerlin'
-
-  // const loadData = () => {
-  //     fetch('https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/falles-fallas/records?limit=20')
-  //         .then((response) => response.json())
-  //         .then((responseJson) => {
-  //             setVLCitems(responseJson.results);
-  //         }
-  //     )
-  // }
+export default function Lista({ navigation, VLCitems, categoriaSeleccionada }) {
+  // Filtramos por categoria
+  const itemsFiltrados = categoriaSeleccionada === "Todas"
+    ? VLCitems
+    : VLCitems.filter(item => item.seccion && item.seccion.includes(categoriaSeleccionada));
 
   const VLCitem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('DetalleFalla', { item: item })}
-      >
-        <View style={styles.itemContainer}>
-          <Image
-            source={require('../assets/Logo_ETSE.png')}
-            style={styles.image}
-          />
+    // Inicializamos el ícono por defecto
+    let Icono = <FontAwesome5 name="fire" color="#FF9800" size={30} />;
 
-          <View style={styles.text}>
-            <Text numberOfLines={1} ellipsizeMode='tail'>
-              {item.nombre}
+    // Verificamos la sección y asignamos el ícono correspondiente
+    if (item.seccion && typeof item.seccion === 'string') {
+      if (item.seccion.includes('A')) {
+        Icono = <MaterialCommunityIcons name="campfire" color="#F44336" size={30} />;
+      } else if (item.seccion.includes('B')) {
+        Icono = <FontAwesome5 name="fire" color="#FF9800" size={30} />;
+      } else if (item.seccion.includes('C')) {
+        Icono = <MaterialCommunityIcons name="candle" color="#FFB74D" size={30} />;
+      } else if (item.seccion.includes('E')) {
+        Icono = <AntDesign name="star" color="#D32F2F" size={30} />;
+      }
+    }
+
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('DetalleFalla', { item: item })}>
+        <View style={styles.card}>
+          {/* Imagen - Izquierda */}
+          <View style={styles.imageContainer}>
+            {Icono}  {/* Mostramos el ícono según la sección */}
+          </View>
+
+          {/* Texto - Centro */}
+          <View style={styles.textContainer}>
+            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+              {item.nombre || 'Sin nombre'}
             </Text>
-            <Text numberOfLines={1} ellipsizeMode='tail'>
-              Seccion: {item.seccion}
+            <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">
+              {item.seccion ? `Sección: ${item.seccion}` : 'Sin sección'}
             </Text>
           </View>
 
-          <Ionicons
-            name='arrow-forward'
-            size={24}
-            color='#5852F2'
-            style={styles.arrow}
-          />
+          {/* Flecha - Derecha */}
+          <View style={styles.arrowContainer}>
+            <Ionicons name="arrow-forward" size={24} color="#F25041" />
+          </View>
         </View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={VLCitems}
+        data={itemsFiltrados}
         renderItem={VLCitem}
-        keyExtractor={item => item.objectid}
+        keyExtractor={(item) => item.objectid ? item.objectid.toString() : 'default-key'}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 1,
     flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'left',
-    justifyContent: 'left',
-    width: '100%'
+    width: '100%',
+    backgroundColor: '#F5F5F5',
+    padding: 10
   },
-  itemContainer: {
-    flexDirection: 'row',
+  card: {
+    flexDirection: 'row', // Distribuye los elementos en fila
     alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    justifyContent: 'left',
-    flex: 1
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: 15,
+    marginVertical: 6,
+    shadowColor: '#F25041',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3 // Para Android
   },
-  image: {
-    width: 30,
-    height: 30,
-    marginRight: 10
+  imageContainer: {
+    width: '15%', // Ajusta el espacio de la imagen
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10
   },
-
-  text: {
+  textContainer: {
+    width: '70%', // Ajusta el espacio del texto
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginLeft: 10
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#F25041'
+  },
+  subtitle: {
+    fontSize: 14,
     color: 'black',
-    fontSize: 16,
-    width: '70%'
+    marginTop: 5
   },
-  arrow: {
-    marginLeft: 25,
-    paddingRight: 5
+  arrowContainer: {
+    width: '10%', // Ajusta el espacio de la flecha
+    justifyContent: 'center',
+    alignItems: 'center'
   }
-})
+});

@@ -9,8 +9,17 @@ export default function MapViewComponent ({
   newRegion,
   VLCitems,
   setShowTooltip,
-  setDataItem
+  setDataItem,
+  categoriaSeleccionada
 }) {
+
+  
+  //Filtramos por categoria
+  const itemsFiltrados = categoriaSeleccionada === "Todas"
+  ? VLCitems
+  : VLCitems.filter(item => item.seccion && item.seccion.includes(categoriaSeleccionada))
+  
+  
   return (
     <MapView
       style={{ width: '100%', height: '100%' }}
@@ -20,7 +29,7 @@ export default function MapViewComponent ({
       showsMyLocationButton
       region={newRegion}
     >
-      {VLCitems.map(item => (
+      {itemsFiltrados.map(item => (
         <Markers
           key={item.id_falla}
           item={item}
