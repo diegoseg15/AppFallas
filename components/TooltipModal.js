@@ -8,10 +8,12 @@ import {
   Image,
   StyleSheet
 } from 'react-native'
+import COLORS from '../Constants/Colors'
 
 export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
   return (
     <Modal
+      key={dataItem?.id_falla}
       visible={showTooltip}
       transparent={true}
       animationType='slide'
@@ -27,9 +29,7 @@ export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
         <View style={styles.tooltipContainer}>
           {/* Botón de cerrar (X) */}
           <TouchableOpacity onPress={closeTooltip} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>
-              <Ionicons name='close' style={{ fontSize: 16 }} />
-            </Text>
+            <Ionicons name='close' style={{ fontSize: 26 }} />
           </TouchableOpacity>
 
           {/* Contenido del modal */}
@@ -39,8 +39,20 @@ export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
           />
           <Text style={styles.tooltipText}>{dataItem?.nombre}</Text>
           <Text style={styles.tooltipDescription}>{dataItem?.lema}</Text>
-          <TouchableOpacity onPress={closeTooltip} style={styles.Button}>
-            <Text style={styles.buttonText}>Mas Información</Text>
+          <View style={styles.itemInfo}>
+            <Text style={{ paddingRight: 5, color: COLORS.light.primary }}>
+              Fallera:
+            </Text>
+            <Text>{dataItem?.fallera}</Text>
+          </View>
+          <View style={styles.itemInfo}>
+            <Text style={{ paddingRight: 5, color: COLORS.light.primary }}>
+              Artista:
+            </Text>
+            <Text>{dataItem?.fallera}</Text>
+          </View>
+          <TouchableOpacity onPress={closeTooltip} style={styles.buttonInfo}>
+            <Text style={styles.buttonInfoText}>Mas Información</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -51,12 +63,12 @@ export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   tooltipContainer: {
-    width: 250,
+    width: '100%',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -72,12 +84,29 @@ const styles = StyleSheet.create({
   tooltipDescription: {
     fontSize: 14,
     color: '#666',
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 10
   },
   closeButton: {
     position: 'absolute', // Posiciona el botón en la esquina superior derecha
-    top: 5,
-    right: 5,
-    padding: 10
+    top: 8,
+    right: 10,
+    padding: 10,
+    backgroundColor: '#e3f0ff',
+    borderRadius: 10
+  },
+  buttonInfo: {
+    padding: 10,
+    backgroundColor: COLORS.light.accent,
+    width: '100%',
+    borderRadius: 10,
+    marginVertical: 20
+  },
+  buttonInfoText: {
+    textAlign: 'center',
+    color: 'white'
+  },
+  itemInfo: {
+    flexDirection: 'row'
   }
 })
