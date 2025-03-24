@@ -9,115 +9,59 @@ import {
 } from 'react-native'
 import { Feather, Ionicons } from '@expo/vector-icons'
 
-const fallas = [
-  {
-    objectid: 5701,
-    id_falla: 373,
-    nombre: 'Antiga Senda de Senent-Albereda',
-    seccion: '21',
-    fallera: 'Blanca Gramage Martínez',
-    presidente: 'NO HAY',
-    artista: 'José Francisco Gómez Fonseca',
-    lema: 'Aprendemos de fallas',
-    anyo_fundacion: null,
-    distintivo: null,
-    boceto:
-      'http://mapas.valencia.es/WebsMunicipales/layar/img/fallasvalencia/2023_373_bi.jpg',
-    experim: null,
-    created_user: 'ADM_GIS',
-    created_date: '2023-02-25T18:32:36+00:00',
-    last_edited_user: 'ADM_GIS',
-    last_edited_date: '2023-02-25T18:32:36+00:00',
-    geo_shape: {
-      type: 'Feature',
-      geometry: {
-        coordinates: [-0.358554450311564, 39.4661328033691],
-        type: 'Point'
-      },
-      properties: {}
-    },
-    geo_point_2d: {
-      lon: -0.358554450311564,
-      lat: 39.4661328033691
-    }
-  },
-  {
-    objectid: 5702,
-    id_falla: 150,
-    nombre: 'Doctor Manuel Candela-Av.del Port',
-    seccion: '17',
-    fallera: 'Candela Gimeno Vera',
-    presidente: 'Héctor Martínez Brenes',
-    artista: 'La Comissió',
-    lema: 'Cuentos desencantados',
-    anyo_fundacion: null,
-    distintivo: null,
-    boceto:
-      'http://mapas.valencia.es/WebsMunicipales/layar/img/fallasvalencia/2023_150_bi.jpg',
-    experim: null,
-    created_user: 'ADM_GIS',
-    created_date: '2023-02-25T18:32:36+00:00',
-    last_edited_user: 'ADM_GIS',
-    last_edited_date: '2023-02-25T18:32:36+00:00',
-    geo_shape: {
-      type: 'Feature',
-      geometry: {
-        coordinates: [-0.349166168132614, 39.4660097022941],
-        type: 'Point'
-      },
-      properties: {}
-    },
-    geo_point_2d: {
-      lon: -0.349166168132614,
-      lat: 39.4660097022941
-    }
-  }
-]
-
-export default function Visited ({ navigation }) {
-  const [favorites, setFavorites] = useState([])
-
-  const toggleFavorite = id => {
-    setFavorites(prev =>
-      prev.includes(id) ? prev.filter(fId => fId !== id) : [...prev, id]
-    )
+export default function Visited ({
+  navigation,
+  visitedFallas,
+  setVisitedFallas
+}) {
+  const removeFromVisited = id => {
+    setVisitedFallas(prev => prev.filter(falla => falla.id_falla !== id))
   }
 
   return (
     <ScrollView style={styles.container}>
-      {fallas.map(falla => (
-        <View key={falla.id_falla} style={styles.card}>
-          <View style={styles.header}>
-            <Text style={styles.title}>{falla.nombre}</Text>
-            <TouchableOpacity onPress={() => toggleFavorite(falla.id_falla)}>
-              <Ionicons
-                name='heart'
-                size={24}
-                color={
-                  favorites.includes(falla.id_falla) ? '#F25041' : '#F2B441'
-                }
-              />
+      {visitedFallas.length === 0 ? (
+        <Text style={{ textAlign: 'center', marginTop: 40 }}>
+          Aún no has marcado ninguna falla como visitada.
+        </Text>
+      ) : (
+        visitedFallas.map(falla => (
+          <View key={falla.id_falla} style={styles.card}>
+            <View style={styles.header}>
+              <Text style={styles.title}>{falla.nombre}</Text>
+            </View>
+            <Image source={{ uri: falla?.boceto }} style={styles.image} />
+            <Text style={styles.info}>
+              <Feather name='user' style={styles.icon} /> Fallera:{' '}
+              {falla.fallera}
+            </Text>
+            <Text style={styles.info}>
+              <Feather name='edit' style={styles.icon} /> Artista:{' '}
+              {falla.artista}
+            </Text>
+            <Text style={styles.info}>
+              <Feather name='message-circle' style={styles.icon} /> Lema:{' '}
+              {falla.lema}
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('DetalleFalla', { item: falla })
+              }
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Más información</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => removeFromVisited(falla.id_falla)}
+              style={[styles.button, { backgroundColor: '#ccc', marginTop: 8 }]}
+            >
+              <Text style={[styles.buttonText, { color: '#333' }]}>
+                Quitar de visitados
+              </Text>
             </TouchableOpacity>
           </View>
-          <Image source={{ uri: falla.sketch }} style={styles.image} />
-          <Text style={styles.info}>
-            <Feather name='user' style={styles.icon} /> Fallera: {falla.fallera}
-          </Text>
-          <Text style={styles.info}>
-            <Feather name='edit' style={styles.icon} /> Artista: {falla.artista}
-          </Text>
-          <Text style={styles.info}>
-            <Feather name='message-circle' style={styles.icon} /> Lema:{' '}
-            {falla.lema}
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('DetalleFalla', { item: falla })}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Más información</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+        ))
+      )}
     </ScrollView>
   )
 }

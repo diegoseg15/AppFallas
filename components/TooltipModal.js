@@ -11,10 +11,13 @@ import {
 import COLORS from '../Constants/Colors'
 
 export default function TooltipModal ({
+  navigation,
   showTooltip,
   closeTooltip,
   dataItem,
-  currentLocation
+  currentLocation,
+  visitedFallas,
+  setVisitedFallas
 }) {
   function calcularDistancia (coord1, coord2) {
     const toRad = x => (x * Math.PI) / 180
@@ -83,7 +86,30 @@ export default function TooltipModal ({
             </Text>
           )}
 
-          <TouchableOpacity onPress={closeTooltip} style={styles.buttonInfo}>
+          {dataItem && (
+            <TouchableOpacity
+              onPress={() => {
+                if (
+                  !visitedFallas.find(f => f.id_falla === dataItem.id_falla)
+                ) {
+                  setVisitedFallas([...visitedFallas, dataItem])
+                }
+              }}
+              style={[
+                styles.buttonInfo,
+                { backgroundColor: COLORS.light.primary }
+              ]}
+            >
+              <Text style={styles.buttonInfoText}>Visitado</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            onPress={() => {
+              closeTooltip
+              navigation.navigate('DetalleFalla', { item: dataItem })
+            }}
+            style={styles.buttonInfo}
+          >
             <Text style={styles.buttonInfoText}>Mas Información</Text>
           </TouchableOpacity>
         </View>

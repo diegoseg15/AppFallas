@@ -1,58 +1,82 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./Home";
-import { Ionicons } from "@expo/vector-icons";
-import Mapa from "./Mapa";
-import Profile from "./Profile";
-import Visited from "./Visited";
+import React, { useState } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Home from './Home'
+import { Ionicons } from '@expo/vector-icons'
+import Mapa from './Mapa'
+import Profile from './Profile'
+import Visited from './Visited'
 
+export default function Main ({ route, navigation }) {
+  const Tab = createBottomTabNavigator()
+  const { usuario } = route.params
+  const [visitedFallas, setVisitedFallas] = useState([])
 
-export default function Main({ route, navigation }) {
-    const Tab = createBottomTabNavigator();
-    const { usuario } = route.params;
+  return (
+    <Tab.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerStyle: { backgroundColor: '#F25041' },
+        headerTintColor: 'white',
+        tabBarStyle: { backgroundColor: '#F25041' },
+        tabBarActiveTintColor: '#F2B441', // Color cuando está seleccionado
+        tabBarInactiveTintColor: 'white', // Color cuando NO está seleccionado
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName
 
-    return (
-        <Tab.Navigator
-            screenOptions={({ route , navigation }) => ({
-                headerStyle: { backgroundColor: "#F25041" },
-                headerTintColor: "white",
-                tabBarStyle: { backgroundColor: "#F25041" },
-                tabBarActiveTintColor: "#F2B441", // Color cuando está seleccionado
-                tabBarInactiveTintColor: "white", // Color cuando NO está seleccionado
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
+          switch (route.name) {
+            case 'Home':
+              iconName = focused ? 'home' : 'home-outline'
+              break
+            case 'Scan':
+              iconName = focused ? 'scan' : 'scan-outline'
+              break
+            case 'Mapa':
+              iconName = focused ? 'map' : 'map-outline'
+              break
+            case 'Visitado':
+              iconName = focused
+                ? 'checkmark-circle'
+                : 'checkmark-circle-outline'
+              break
+            case 'Perfil':
+              iconName = focused ? 'person' : 'person-outline'
+              break
+            default:
+              iconName = 'help-circle'
+          }
 
-                    switch (route.name) {
-                        case "Home":
-                            iconName = focused ? "home" : "home-outline";
-                            break;
-                        case "Scan":
-                            iconName = focused ? "scan" : "scan-outline";
-                            break;
-                        case "Mapa":
-                            iconName = focused ? "map" : "map-outline";
-                            break;
-                        case "Visitado":
-                            iconName = focused
-                                ? "checkmark-circle"
-                                : "checkmark-circle-outline";
-                            break;
-                        case "Perfil":
-                            iconName = focused ? "person" : "person-outline";
-                            break;
-                        default:
-                            iconName = "help-circle";
-                    }
+          return <Ionicons name={iconName} size={size} color={color} />
+        }
+      })}
+    >
+      <Tab.Screen name='Home' component={Home} initialParams={{ usuario }} />
+      <Tab.Screen name='Scan' component={Home} initialParams={{ usuario }} />
+      <Tab.Screen
+        name='Mapa'
+        children={props => (
+          <Mapa
+            {...props}
+            visitedFallas={visitedFallas}
+            setVisitedFallas={setVisitedFallas}
+          />
+        )}
+      />
 
-                    return <Ionicons name={iconName} size={size} color={color} />;
-                },
-            })}
-        >
-            <Tab.Screen name="Home" component={Home} initialParams={{ usuario }} />
-            <Tab.Screen name="Scan" component={Home} initialParams={{ usuario }} />
-            <Tab.Screen name="Mapa" component={Mapa}  />
-            <Tab.Screen name="Visitado"component={Visited} initialParams={{ usuario }}/>
-            <Tab.Screen name="Perfil" component={Profile} initialParams={{ usuario }} />
-        </Tab.Navigator>
-    );
+      <Tab.Screen
+        name='Visitado'
+        children={props => (
+          <Visited
+            {...props}
+            visitedFallas={visitedFallas}
+            setVisitedFallas={setVisitedFallas} // 👈
+          />
+        )}
+      />
+
+      <Tab.Screen
+        name='Perfil'
+        component={Profile}
+        initialParams={{ usuario }}
+      />
+    </Tab.Navigator>
+  )
 }

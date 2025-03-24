@@ -7,7 +7,7 @@ import TooltipModal from '../components/TooltipModal'
 import * as Location from 'expo-location'
 import Lista from './Lista'
 
-export default function Mapa ({ navigation }) {
+export default function Mapa ({ navigation, setVisitedFallas, visitedFallas }) {
   const [vista, setVista] = useState('mapa')
   const [mostrarCategorias, setMostrarCategorias] = useState(false)
   const mapView = useRef(null)
@@ -141,10 +141,13 @@ export default function Mapa ({ navigation }) {
       />
 
       <TooltipModal
+        navigation={navigation}
         showTooltip={showTooltip}
         closeTooltip={closeTooltip}
         dataItem={dataItem}
         currentLocation={currentLocation}
+        visitedFallas={visitedFallas}
+        setVisitedFallas={setVisitedFallas}
       />
     </SafeAreaView>
   )
