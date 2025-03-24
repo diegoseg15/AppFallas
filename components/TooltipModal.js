@@ -10,7 +10,29 @@ import {
 } from 'react-native'
 import COLORS from '../Constants/Colors'
 
-export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
+export default function TooltipModal ({
+  showTooltip,
+  closeTooltip,
+  dataItem,
+  currentLocation
+}) {
+  function calcularDistancia (coord1, coord2) {
+    const toRad = x => (x * Math.PI) / 180
+    const R = 6371 // km
+    const dLat = toRad(coord2.latitude - coord1.latitude)
+    const dLon = toRad(coord2.longitude - coord1.longitude)
+
+    const lat1 = toRad(coord1.latitude)
+    const lat2 = toRad(coord2.latitude)
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const d = R * c
+    return d
+  }
+
   return (
     <Modal
       key={dataItem?.id_falla}
@@ -51,6 +73,16 @@ export default function TooltipModal ({ showTooltip, closeTooltip, dataItem }) {
             </Text>
             <Text>{dataItem?.fallera}</Text>
           </View>
+          {dataItem && currentLocation && (
+            <Text style={{ marginTop: 5, fontSize: 14, color: '#333' }}>
+              {calcularDistancia(currentLocation, {
+                latitude: dataItem.geo_shape.geometry.coordinates[1],
+                longitude: dataItem.geo_shape.geometry.coordinates[0]
+              }).toFixed(2)}{' '}
+              km
+            </Text>
+          )}
+
           <TouchableOpacity onPress={closeTooltip} style={styles.buttonInfo}>
             <Text style={styles.buttonInfoText}>Mas Información</Text>
           </TouchableOpacity>

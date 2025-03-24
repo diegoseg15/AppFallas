@@ -11,13 +11,22 @@ import {
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
-export default function Lista({ navigation, VLCitems, categoriaSeleccionada }) {
+export default function Lista({ navigation, VLCitems, categoriaSeleccionada, searchText }) {
   // Filtramos por categoria
-  const itemsFiltrados = categoriaSeleccionada === "Todas"
-    ? VLCitems
-    : VLCitems.filter(item => item.seccion && item.seccion.includes(categoriaSeleccionada));
-
-  const VLCitem = ({ item }) => {
+  const itemsFiltrados = VLCitems.filter(item => {
+    const seccion = item.seccion?.toLowerCase() || ''
+    const nombre = item.nombre?.toLowerCase() || ''
+    const query = searchText.toLowerCase()
+  
+    const coincideCategoria =
+      categoriaSeleccionada === 'Todas' || seccion.includes(categoriaSeleccionada.toLowerCase())
+  
+    const coincideBusqueda =
+      nombre.includes(query) || seccion.includes(query)
+  
+    return coincideCategoria && coincideBusqueda
+  })
+    const VLCitem = ({ item }) => {
     // Inicializamos el ícono por defecto
     let Icono = <FontAwesome5 name="fire" color="#FF9800" size={30} />;
 

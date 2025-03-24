@@ -10,15 +10,24 @@ export default function MapViewComponent ({
   VLCitemsInfantil,
   setShowTooltip,
   setDataItem,
-  categoriaSeleccionada
+  categoriaSeleccionada,
+  searchText
 }) {
   //Filtramos por categoria
-  const itemsFiltrados =
-    categoriaSeleccionada === 'Todas'
-      ? VLCitems.concat(VLCitemsInfantil)
-      : VLCitems.concat(VLCitemsInfantil).filter(
-          item => item.seccion && item.seccion.includes(categoriaSeleccionada)
-        )
+  const itemsFiltrados = VLCitems.concat(VLCitemsInfantil).filter(item => {
+    const seccion = item.seccion?.toLowerCase() || ''
+    const nombre = item.nombre?.toLowerCase() || ''
+    const query = searchText.toLowerCase()
+  
+    const coincideCategoria =
+      categoriaSeleccionada === 'Todas' || seccion.includes(categoriaSeleccionada.toLowerCase())
+  
+    const coincideBusqueda =
+      nombre.includes(query) || seccion.includes(query)
+  
+    return coincideCategoria && coincideBusqueda
+  })
+  
 
   return (
     <>

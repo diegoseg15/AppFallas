@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TextInput } from 'react-native'
 import MapViewComponent from '../components/MapViewComponent'
 import SegmentedControl from '../components/SegmentedControl'
 import CategoryList from '../components/CategoryList'
@@ -17,6 +17,7 @@ export default function Mapa ({ navigation }) {
   const [dataItem, setDataItem] = useState(null)
   const [permission, setPermission] = useState(null)
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas') // Estado para la categoría
+  const [searchText, setSearchText] = useState('')
 
   const initialRegion = {
     latitude: 39.4699,
@@ -26,6 +27,8 @@ export default function Mapa ({ navigation }) {
   }
 
   const [newRegion, setNewRegion] = useState(initialRegion)
+
+  const [currentLocation, setCurrentLocation] = useState(null)
 
   useEffect(() => {
     const getCurrentLocation = async () => {
@@ -40,6 +43,7 @@ export default function Mapa ({ navigation }) {
           longitudeDelta: 0.01
         }
         setNewRegion(region)
+        setCurrentLocation(location.coords) // <<<<<< Guarda coords actuales
         mapView.current.animateToRegion(region, 2000)
       } else {
         setPermission(false)
@@ -93,6 +97,19 @@ export default function Mapa ({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <SegmentedControl vista={vista} setVista={setVista} />
+      <TextInput
+        placeholder='Buscar por nombre o sección'
+        value={searchText}
+        onChangeText={setSearchText}
+        style={{
+          backgroundColor: '#fff',
+          padding: 10,
+          margin: 10,
+          borderRadius: 8,
+          borderColor: '#ccc',
+          borderWidth: 1
+        }}
+      />
 
       <View style={styles.contentContainer}>
         {vista === 'mapa' ? (
@@ -105,12 +122,14 @@ export default function Mapa ({ navigation }) {
             setShowTooltip={setShowTooltip}
             setDataItem={setDataItem}
             categoriaSeleccionada={categoriaSeleccionada}
+            searchText={searchText}
           />
         ) : (
           <Lista
             navigation={navigation}
             VLCitems={VLCitems}
             categoriaSeleccionada={categoriaSeleccionada}
+            searchText={searchText}
           />
         )}
       </View>
@@ -125,6 +144,7 @@ export default function Mapa ({ navigation }) {
         showTooltip={showTooltip}
         closeTooltip={closeTooltip}
         dataItem={dataItem}
+        currentLocation={currentLocation}
       />
     </SafeAreaView>
   )
