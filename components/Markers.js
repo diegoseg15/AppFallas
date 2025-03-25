@@ -35,7 +35,7 @@ export default function Markers ({ item, setShowTooltip, setDataItem }) {
         longitude: item.geo_shape.geometry.coordinates[0]
       }}
       title={item.nombre}
-      pinColor={item.seccionCOLORS.light.primary}
+      pinColor={COLORS.light.primary}
       onPress={handleMarkerPress} // Manejar el clic en el Marker
     ></Marker>
   )
