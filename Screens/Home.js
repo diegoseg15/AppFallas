@@ -1,47 +1,87 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Modal, TouchableOpacity } from "react-native";
+import { Calendar } from "react-native-calendars"; // Importamos el componente Calendar
 
 export default function Home({ route }) {
-  const { usuario } = route.params; // 🔹 Recibimos el usuario
+  const { usuario } = route.params; // Recibimos el usuario
+
+  // Fechas de los eventos clave
+  const eventDates = {
+    "2025-03-01": { marked: true, dotColor: "#F25041" },
+    "2025-03-15": { marked: true, dotColor: "#F25041" },
+    "2025-03-16": { marked: true, dotColor: "#F25041" },
+    "2025-03-17": { marked: true, dotColor: "#F25041" },
+    "2025-03-18": { marked: true, dotColor: "#F25041" },
+    "2025-03-19": { marked: true, dotColor: "#F25041" },
+  };
+
+  // Eventos asociados a las fechas
+  const events = {
+    "2025-03-01": "Inicio de las Mascletàs (1-19 marzo, 14:00 h): Explosiones de pólvora en la Plaza del Ayuntamiento.",
+    "2025-03-15": "La Crida (último domingo de febrero): Inicio oficial de las Fallas.",
+    "2025-03-16": "Exposición del Ninot (febrero-marzo): Exposición donde se elige el ninot indultat.",
+    "2025-03-17": "Ofrenda de Flores (16-17 marzo): Miles de falleros llevan flores a la Virgen.",
+    "2025-03-18": "Nit del Foc (18 marzo): Gran castillo de fuegos artificiales.",
+    "2025-03-19": "Cremà (19 marzo): Quema de las fallas, cerrando la fiesta con la Falla del Ayuntamiento.",
+  };
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Función para manejar la selección de fecha
+  const handleDayPress = (day) => {
+    const event = events[day.dateString];
+    if (event) {
+      setSelectedEvent(event);
+      setModalVisible(true); // Abrir el modal cuando hay un evento
+    } else {
+      setSelectedEvent(null); // Si no hay evento, no mostramos nada
+      setModalVisible(false); // Cerrar el modal si no hay evento
+    }
+  };
+
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedEvent(null);
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Bienvenido a Valencia, {usuario} </Text>
-      <Text style={styles.subtitle}>¡Valencia is on faller!</Text>
-
-      {/* Fechas Clave */}
-      <View style={styles.section}>
-        <Text style={styles.heading}>🗓 Fechas Clave</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>1 de marzo:</Text> Inicio de las mascletàs en la Plaza del Ayuntamiento.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>15 de marzo:</Text> Plantà de las fallas grandes e infantiles.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>16 y 17 de marzo:</Text> Ofrenda de Flores a la Virgen de los Desamparados.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>18 de marzo:</Text> Nit del Foc, el mayor espectáculo de fuegos artificiales.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>19 de marzo:</Text> Cremà, quema de las fallas y fin de la fiesta.</Text>
+      {/* Card de Bienvenida */}
+      <View style={styles.cardContainer}>
+        <Text style={styles.title}>Bienvenido a Valencia, {usuario}</Text>
+        <Text style={styles.subtitle}>¡Valencia is on faller!</Text>
       </View>
 
-      {/* Historia y Origen */}
-      <View style={styles.section}>
-        <Text style={styles.heading}>🔥 Historia y Origen</Text>
-        <Text style={styles.text}>
-          Las Fallas de Valencia tienen su origen en una tradición de los carpinteros valencianos, quienes quemaban los
-          restos de madera sobrante cada 19 de marzo, día de San José. Esta costumbre evolucionó a lo largo de los años
-          hasta convertirse en los monumentos artísticos que conocemos hoy.
-        </Text>
-        <Text style={styles.text}>
-          En 2016, las Fallas fueron declaradas Patrimonio Inmaterial de la Humanidad por la UNESCO.
-        </Text>
+      {/* Calendario de Eventos */}
+      <View style={styles.calendarContainer}>
+        <Text style={styles.heading}>Eventos</Text>
+        <Calendar
+          markedDates={eventDates} // Aquí pasamos las fechas marcadas
+          markingType="simple" // Tipo de marca para las fechas (puede ser 'dot' o 'simple')
+          monthFormat="yyyy MM"
+          style={styles.calendar}
+          onDayPress={handleDayPress} // Llamamos a la función cuando se selecciona un día
+        />
       </View>
 
-      {/* Eventos Destacados */}
-      <View style={styles.section}>
-        <Text style={styles.heading}>🎆 Eventos Destacados</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>Mascletàs (1-19 marzo, 14:00 h):</Text> Explosiones de pólvora en la Plaza del Ayuntamiento.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>La Crida (último domingo de febrero):</Text> Inicio oficial de las Fallas.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>Exposición del Ninot (febrero-marzo):</Text> Exposición donde se elige el ninot indultat.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>Ofrenda de Flores (16-17 marzo):</Text> Miles de falleros llevan flores a la Virgen.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>Nit del Foc (18 marzo):</Text> Gran castillo de fuegos artificiales.</Text>
-        <Text style={styles.text}><Text style={styles.textbold}>Cremà (19 marzo):</Text> Quema de las fallas, cerrando la fiesta con la Falla del Ayuntamiento.</Text>
-      </View>
+      {/* Modal de Información del Evento Seleccionado */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalText}>{selectedEvent}</Text>
+            <TouchableOpacity style={styles.button} onPress={closeModal}>
+              <Text style={styles.buttonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -51,19 +91,83 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "White",
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
-  title: { fontSize: 28, fontWeight: "bold", color: "#F25041", marginTop: 20 },
-  subtitle: { fontSize: 18, color: "#F25041", marginTop: 10 },
-  section: {
+  cardContainer: {
+    marginTop: 20,
+    padding: 20,
+    backgroundColor: '#F9F9F9',
+    borderRadius: 10,
+    elevation: 5, // Sombra en Android
+    shadowColor: '#F25041', // Sombra roja
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    marginBottom: 20,
+    alignItems: 'center', // Centrado del contenido dentro del card
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#F25041",
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#F25041",
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  calendarContainer: {
     marginTop: 20,
     padding: 15,
-    backgroundColor: "white",  // Un color ligeramente diferente para el fondo de las secciones
-    borderRadius: 10,  // Bordes redondeados
-    borderWidth: 3,  // El grosor del borde
-    borderColor: "#F25041",  // Color blanco para el borde
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: "#F25041",
+    elevation: 5, // Sombra en Android
+    shadowColor: '#F25041', // Sombra roja
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
-  heading: { fontSize: 22, fontWeight: "bold", color: "#F25041" },
-  text: { fontSize: 16, color: "black", marginTop: 8 },
-  textbold: { fontSize: 16, color: "#F25041", marginTop: 8, fontWeight: "bold"},
-
+  calendar: {
+    height: 350,
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#F25041",
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderColor: "#F25041",
+    borderWidth: 2,
+  },
+  modalText: {
+    fontSize: 16,
+    color: "black",
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: "#F25041",
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+  },
 });

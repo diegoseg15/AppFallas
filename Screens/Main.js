@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import Mapa from './Mapa'
 import Profile from './Profile'
 import Visited from './Visited'
+import  Scan from './Scan'
 
 export default function Main ({ route, navigation }) {
   const Tab = createBottomTabNavigator()
@@ -49,7 +50,7 @@ export default function Main ({ route, navigation }) {
       })}
     >
       <Tab.Screen name='Home' component={Home} initialParams={{ usuario }} />
-      <Tab.Screen name='Scan' component={Home} initialParams={{ usuario }} />
+      <Tab.Screen name='Scan' component={Scan} initialParams={{ usuario }} />
       <Tab.Screen
         name='Mapa'
         children={props => (

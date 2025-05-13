@@ -7,12 +7,13 @@ import NavigationAppDemo from './Screens/NavigationAppDemo';
 import Main from './Screens/Main';
 import Lista from './Screens/Lista';
 import DetalleFalla from './Screens/DetalleFalla';
+import { FallasProvider } from './context/FallasContext';
 
 export default function App() {
   const Stack = createStackNavigator();
   return (
 
-  
+    <FallasProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
@@ -22,6 +23,7 @@ export default function App() {
         
       </Stack.Navigator>
     </NavigationContainer>
+    </FallasProvider>
     
   );
 }

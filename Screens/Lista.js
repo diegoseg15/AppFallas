@@ -48,7 +48,7 @@ export default function Lista({ navigation, VLCitems, categoriaSeleccionada, sea
         <View style={styles.card}>
           {/* Imagen - Izquierda */}
           <View style={styles.imageContainer}>
-            {Icono}  {/* Mostramos el ícono según la sección */}
+            {Icono}  
           </View>
 
           {/* Texto - Centro */}

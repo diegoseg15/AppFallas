@@ -1,104 +1,73 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { View, StyleSheet, SafeAreaView, TextInput } from 'react-native'
-import MapViewComponent from '../components/MapViewComponent'
-import SegmentedControl from '../components/SegmentedControl'
-import CategoryList from '../components/CategoryList'
-import TooltipModal from '../components/TooltipModal'
-import * as Location from 'expo-location'
-import Lista from './Lista'
+// src/screens/Mapa.js
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, SafeAreaView, TextInput } from 'react-native';
+import { useFallasContext } from '../context/FallasContext';
+import MapViewComponent from '../components/MapViewComponent';
+import SegmentedControl from '../components/SegmentedControl';
+import CategoryList from '../components/CategoryList';
+import TooltipModal from '../components/TooltipModal';
+import Lista from './Lista';
+import * as Location from 'expo-location';
 
-export default function Mapa ({ navigation, setVisitedFallas, visitedFallas }) {
-  const [vista, setVista] = useState('mapa')
-  const [mostrarCategorias, setMostrarCategorias] = useState(false)
-  const mapView = useRef(null)
-  const [VLCitems, setVLCitems] = useState([])
-  const [VLCitemsInfantil, setVLCitemsInfantil] = useState([])
-  const [showTooltip, setShowTooltip] = useState(false)
-  const [dataItem, setDataItem] = useState(null)
-  const [permission, setPermission] = useState(null)
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas') // Estado para la categoría
-  const [searchText, setSearchText] = useState('')
-
-  const initialRegion = {
+export default function Mapa({ navigation, setVisitedFallas, visitedFallas }) {
+  const [vista, setVista] = useState('mapa');
+  const [mostrarCategorias, setMostrarCategorias] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [dataItem, setDataItem] = useState(null);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas');
+  const [searchText, setSearchText] = useState('');
+  const [currentLocation, setCurrentLocation] = useState(null)
+  
+  const [newRegion, setNewRegion] = useState({
     latitude: 39.4699,
     longitude: -0.3763,
-    latitudeDelta: 2,
-    longitudeDelta: 2
-  }
+    latitudeDelta: 0.05, // Ajuste del zoom
+    longitudeDelta: 0.05, // Ajuste del zoom
+  });
 
-  const [newRegion, setNewRegion] = useState(initialRegion)
+  const mapView = useRef(null);
 
-  const [currentLocation, setCurrentLocation] = useState(null)
+  const { VLCitems, VLCitemsInfantil } = useFallasContext();
 
+
+  // UseEffect para obtener la ubicación solo la primera vez que se renderiza el mapa
   useEffect(() => {
-    const getCurrentLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status === 'granted') {
-        setPermission(true)
-        let location = await Location.getCurrentPositionAsync({})
-        let region = {
-          latitude: parseFloat(location.coords.latitude),
-          longitude: parseFloat(location.coords.longitude),
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01
+    if (vista === 'mapa') {
+      const getCurrentLocation = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          let location = await Location.getCurrentPositionAsync({});
+          let region = {
+            latitude: parseFloat(location.coords.latitude),
+            longitude: parseFloat(location.coords.longitude),
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          };
+          setNewRegion(region);
+          setCurrentLocation(location.coords)
+          mapView.current.animateToRegion(region, 2000); // Animar al centro de la ubicación
+        } else {
+          alert('Permission to access location was denied');
         }
-        setNewRegion(region)
-        setCurrentLocation(location.coords) // <<<<<< Guarda coords actuales
-        mapView.current.animateToRegion(region, 2000)
-      } else {
-        setPermission(false)
-        alert('Permission to access location was denied')
-      }
+      };
+      getCurrentLocation();
     }
-
-    getCurrentLocation()
-    loadData()
-  }, [])
-
-  const loadData = async () => {
-    let allRecordsMayor = []
-    let allRecordsInfantil = []
-    let limit = 100
-    let totalRecords = 349 // Sabemos que hay 349 registros
-
-    for (let offset = 0; offset < totalRecords; offset += limit) {
-      try {
-        const responseFallasMayor = await fetch(
-          `https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/falles-fallas/records?limit=${limit}&offset=${offset}`
-        )
-        const dataMayor = await responseFallasMayor.json()
-
-        const responseFallasInfantil = await fetch(
-          `https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/falles-infantils-fallas-infantiles/records?limit=${limit}&offset=${offset}`
-        )
-
-        const dataInfantil = await responseFallasInfantil.json()
-
-        allRecordsMayor = allRecordsMayor.concat(dataMayor.results)
-        allRecordsInfantil = allRecordsInfantil.concat(dataInfantil.results)
-      } catch (error) {
-        console.error('Error al obtener los datos:', error)
-      }
-    }
-
-    setVLCitems(allRecordsMayor) // Guarda los 349 registros en el estado
-    setVLCitemsInfantil(allRecordsInfantil)
-  }
+  }, [vista]); // Este efecto solo se ejecutará cuando la vista sea "mapa"
 
   const toggleCategorias = () => {
-    setMostrarCategorias(!mostrarCategorias)
-  }
+    setMostrarCategorias(!mostrarCategorias);
+  };
 
   const closeTooltip = () => {
-    setShowTooltip(false)
-    setDataItem(null)
-  }
+    setShowTooltip(false);
+    setDataItem(null);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <SegmentedControl vista={vista} setVista={setVista} />
       <TextInput
-        placeholder='Buscar por nombre o sección'
+        placeholder="Buscar por nombre o sección"
         value={searchText}
         onChangeText={setSearchText}
         style={{
@@ -107,7 +76,7 @@ export default function Mapa ({ navigation, setVisitedFallas, visitedFallas }) {
           margin: 10,
           borderRadius: 8,
           borderColor: '#ccc',
-          borderWidth: 1
+          borderWidth: 1,
         }}
       />
 
@@ -115,7 +84,6 @@ export default function Mapa ({ navigation, setVisitedFallas, visitedFallas }) {
         {vista === 'mapa' ? (
           <MapViewComponent
             mapViewRef={mapView}
-            initialRegion={initialRegion}
             newRegion={newRegion}
             VLCitems={VLCitems}
             VLCitemsInfantil={VLCitemsInfantil}
@@ -150,19 +118,19 @@ export default function Mapa ({ navigation, setVisitedFallas, visitedFallas }) {
         setVisitedFallas={setVisitedFallas}
       />
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5'
+    backgroundColor: '#F5F5F5',
   },
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 7,
-    backgroundColor: 'white'
-  }
-})
+    backgroundColor: 'white',
+  },
+});
