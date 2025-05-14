@@ -98,6 +98,7 @@ export default function Mapa({ navigation, setVisitedFallas, visitedFallas }) {
             VLCitems={VLCitems}
             categoriaSeleccionada={categoriaSeleccionada}
             searchText={searchText}
+            currentLocation={currentLocation}
           />
         )}
       </View>
