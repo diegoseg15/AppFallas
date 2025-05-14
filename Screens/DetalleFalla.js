@@ -1,24 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as Sharing from 'expo-sharing'; // Importamos expo-sharing
+import { Linking} from 'react-native';
 
 export default function DetalleFalla({ route, navigation }) {
   const { item } = route.params;
 
+ 
   const handleShare = async () => {
-    try {
-      const message = `Visita esta falla: ${item.nombre}. ¡No te la pierdas!`;
-  
-      if (Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(message);  // Solo un mensaje de texto
-      } else {
-        Alert.alert('Error', 'Compartir no está disponible en este dispositivo');
-      }
-    } catch (error) {
-      console.log('Error al compartir:', error);
+  const message = `Visita esta falla: ${item.nombre}. ¡No te la pierdas!`;
+  const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert('Error', 'No se puede abrir WhatsApp');
     }
-  };
+  } catch (error) {
+    console.log('Error al compartir:', error);
+  }
+};
   
 
   const handleVisited = () => {
@@ -73,10 +76,7 @@ export default function DetalleFalla({ route, navigation }) {
             <Ionicons name="share-social" size={24} color="white" />
             <Text style={styles.buttonText}>Compartir</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleVisited}>
-            <Ionicons name="checkmark-circle" size={24} color="white" />
-            <Text style={styles.buttonText}>Visitado</Text>
-          </TouchableOpacity>
+          
         </View>
       </View>
     </ScrollView>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: 20,
   },
   button: {
