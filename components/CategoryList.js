@@ -7,6 +7,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import COLORS from '../Constants/Colors';
 
 const categorias = [
   { nombre: 'Todas', icono: 'view-list' },
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 12,
     paddingHorizontal: 25,
-    backgroundColor: '#F25041',
+    backgroundColor:  COLORS.light.primary,
     alignItems: 'center',
     borderRadius: 30,
     shadowColor: '#000',
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     left: '18%',
     right: '18%',
-    backgroundColor: '#F25041',
+    backgroundColor:  COLORS.light.primary,
     borderRadius: 20,
     paddingVertical: 15,
     // paddingHorizontal: 25,
