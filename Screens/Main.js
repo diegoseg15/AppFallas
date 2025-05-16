@@ -6,25 +6,28 @@ import Mapa from './Mapa'
 import Profile from './Profile'
 import Visited from './Visited'
 import  Scan from './Scan'
+import { useUsuario } from '../context/UsuarioContext'
+import COLORS from '../Constants/Colors'
 
 export default function Main ({ route, navigation }) {
   const Tab = createBottomTabNavigator()
-  const { usuario } = route.params
   const [visitedFallas, setVisitedFallas] = useState([])
+  const { usuario, setUsuario } = useUsuario()
+
 
   return (
     <Tab.Navigator
       screenOptions={({ route, navigation }) => ({
-        headerStyle: { backgroundColor: '#F25041' },
+        headerStyle: { backgroundColor: COLORS.light.primary },
         headerTintColor: 'white',
-        tabBarStyle: { backgroundColor: '#F25041' },
-        tabBarActiveTintColor: '#F2B441', // Color cuando está seleccionado
+        tabBarStyle: { backgroundColor: COLORS.light.primary },
+        tabBarActiveTintColor: COLORS.light.secondary, // Color cuando está seleccionado
         tabBarInactiveTintColor: 'white', // Color cuando NO está seleccionado
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
           switch (route.name) {
-            case 'Home':
+            case 'Inicio':
               iconName = focused ? 'home' : 'home-outline'
               break
             case 'Scan':
@@ -49,7 +52,7 @@ export default function Main ({ route, navigation }) {
         }
       })}
     >
-      <Tab.Screen name='Home' component={Home} initialParams={{ usuario }} />
+      <Tab.Screen name='Inicio' component={Home} initialParams={{ usuario }} />
       <Tab.Screen name='Scan' component={Scan} initialParams={{ usuario }} />
       <Tab.Screen
         name='Mapa'
@@ -76,8 +79,8 @@ export default function Main ({ route, navigation }) {
       <Tab.Screen
         name='Perfil'
         component={Profile}
-        initialParams={{ usuario }}
       />
+      
     </Tab.Navigator>
   )
 }
