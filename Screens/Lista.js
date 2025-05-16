@@ -15,6 +15,7 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import COLORS from "../Constants/Colors";
 
 export default function Lista({
   navigation,
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS.light.backgroundColor2,
     padding: 10,
   },
   card: {
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 15,
     marginVertical: 6,
-    shadowColor: "#F25041",
+    shadowColor:  COLORS.light.primary,
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
