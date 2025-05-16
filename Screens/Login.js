@@ -7,15 +7,15 @@ import {
   StyleSheet,
   Button
 } from "react-native";
-import {LinearGradient} from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
+import { useUsuario } from "../context/UsuarioContext";
 
 export default function Login({ navigation }) {
-  const [usuario, setUsuario] = useState("");
+const { usuario, setUsuario } = useUsuario()
 
-
-const handleLogin = () => {
+  const handleLogin = () => {
     if (usuario.trim() !== "") {
-      navigation.navigate("Main", { usuario }, navigation); // 🔹 Pasamos "usuario" a Home
+      navigation.navigate("Main", navigation); // 🔹 Pasamos "usuario" a Home
     } else {
       alert("Por favor, ingrese un usuario.");
     }
@@ -25,13 +25,13 @@ const handleLogin = () => {
 
   return (
     <View style={styles.container}>
-        
-        <LinearGradient
-                // Background Linear Gradient
-                colors={['#F2B441', 'transparent']}
-                style={styles.background}
-              />       
-      
+
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['#F2B441', 'transparent']}
+        style={styles.background}
+      />
+
       <Text style={styles.title}>Bienvenido!</Text>
       <TextInput
         style={styles.input}
@@ -44,13 +44,13 @@ const handleLogin = () => {
         style={styles.input}
         placeholder="Contraseña"
         secureTextEntry
-       
+
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Ingresar</Text>
       </TouchableOpacity>
 
-     
+
     </View>
   );
 }
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 40,
-    backgroundColor:"#F25041"
-    
+    backgroundColor: "#F25041"
+
   },
   background: {
     position: 'absolute',
