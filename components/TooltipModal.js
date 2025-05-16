@@ -61,24 +61,27 @@ export default function TooltipModal({
             style={styles.image}
           />
           <Text style={styles.tooltipText}>{dataItem?.nombre}</Text>
-          <Text style={styles.tooltipDescription}>{dataItem?.lema}</Text>
-        
+          <Text style={styles.tooltipDescription}>{dataItem?.lema === "NADA" ? dataItem?.lema : "No tiene lema"}</Text>
+
 
           {dataItem && currentLocation && (
-            <Text style={styles.distanceText}>
-              {calcularDistancia(currentLocation, {
-                latitude: dataItem.geo_shape.geometry.coordinates[1],
-                longitude: dataItem.geo_shape.geometry.coordinates[0]
-              }).toFixed(2)}{' '}
-              km
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontWeight: "500", fontSize: 16, color: COLORS.light.secondary }}>Distancia:{' '}</Text>
+              <Text style={styles.distanceText}>
+                {calcularDistancia(currentLocation, {
+                  latitude: dataItem.geo_shape.geometry.coordinates[1],
+                  longitude: dataItem.geo_shape.geometry.coordinates[0]
+                }).toFixed(2)}{' '}
+                km
+              </Text>
+            </View>
           )}
 
           {/* Botón de Visitado */}
           {dataItem && (
             <TouchableOpacity
               onPress={handleMarkAsVisited} // Llamamos a la función para marcar como visitada
-              style={[styles.buttonInfo, { backgroundColor: COLORS.light.accent }]}
+              style={[styles.buttonVisited]}
             >
               <Ionicons name='checkmark-circle' size={20} color='white' style={styles.icon} />
               <Text style={styles.buttonInfoText}>Visitado</Text>
@@ -91,7 +94,7 @@ export default function TooltipModal({
               closeTooltip();
               navigation.navigate('DetalleFalla', { item: dataItem });
             }}
-            style={[styles.buttonInfo, { backgroundColor: COLORS.light.accent }]}
+            style={[styles.buttonInfo]}
           >
             <Ionicons name='information-circle' size={20} color='white' style={styles.icon} />
             <Text style={styles.buttonInfoText}>Más Información</Text>
@@ -105,47 +108,59 @@ export default function TooltipModal({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   tooltipContainer: {
-    width: '80%',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    paddingTop: 32,
+    paddingHorizontal: 18,
   },
   tooltipText: {
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
-    marginTop: 10,
-    alignContent: 'center'
+    marginVertical: 12,
+    textAlign: 'center'
   },
   tooltipDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#666',
-    marginTop: 5,
+    marginVertical: 5,
     marginBottom: 10
   },
   closeButton: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    top: 13,
+    right: 13,
     padding: 8,
     backgroundColor: '#e3f0ff',
     borderRadius: 20
   },
-  buttonInfo: {
+  buttonVisited: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     backgroundColor: COLORS.light.accent,
     width: '100%',
     borderRadius: 10,
-    marginVertical: 10,
+    marginTop: 16,
+    marginBottom: 10,
+    justifyContent: 'center'
+  },
+  buttonInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: COLORS.light.primary,
+    width: '100%',
+    borderRadius: 10,
+    marginBottom: 16,
     justifyContent: 'center'
   },
   buttonInfoText: {
@@ -165,13 +180,13 @@ const styles = StyleSheet.create({
     color: COLORS.light.primary
   },
   distanceText: {
-    marginTop: 5,
-    fontSize: 14,
+    marginVertical: 5,
+    fontSize: 16,
     color: '#333'
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 300,
+    height: 300,
     borderRadius: 5,
     marginTop: 20
   }
