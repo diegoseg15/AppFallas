@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Modal, TouchableOpacity } from "react-native";
 import { Calendar } from "react-native-calendars"; // Importamos el componente Calendar
+import { useUsuario } from '../context/UsuarioContext'
+import COLORS from "../Constants/Colors"; // Asegúrate de tener este archivo con los colores definidos
 
 export default function Home({ route }) {
-  const { usuario } = route.params; // Recibimos el usuario
+  const { usuario, setUsuario } = useUsuario()
 
   // Fechas de los eventos clave
   const eventDates = {
@@ -58,12 +60,28 @@ export default function Home({ route }) {
       <View style={styles.calendarContainer}>
         <Text style={styles.heading}>Eventos</Text>
         <Calendar
-          markedDates={eventDates} // Aquí pasamos las fechas marcadas
-          markingType="simple" // Tipo de marca para las fechas (puede ser 'dot' o 'simple')
-          monthFormat="yyyy MM"
+          markedDates={eventDates}
+          markingType="dot"
+          monthFormat="MMMM yyyy"
           style={styles.calendar}
-          onDayPress={handleDayPress} // Llamamos a la función cuando se selecciona un día
+          onDayPress={handleDayPress}
+          theme={{
+            textSectionTitleColor: COLORS.light.secondary,
+            selectedDayBackgroundColor: COLORS.light.primary,
+            todayTextColor: COLORS.light.secondary,
+            textDisabledColor: '#d9e1e8',
+            dotColor: COLORS.light.primary,
+            arrowColor: COLORS.light.primary,
+            monthTextColor: COLORS.light.primary,
+            textDayFontWeight: '500',
+            textMonthFontWeight: 'bold',
+            textDayHeaderFontWeight: 'bold',
+            textDayFontSize: 16,
+            textMonthFontSize: 18,
+            textDayHeaderFontSize: 14,
+          }}
         />
+
       </View>
 
       {/* Modal de Información del Evento Seleccionado */}
@@ -96,10 +114,10 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginTop: 20,
     padding: 20,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: COLORS.light.backgroundColor2,
     borderRadius: 10,
     elevation: 5, // Sombra en Android
-    shadowColor: '#F25041', // Sombra roja
+    shadowColor: COLORS.light.primary, // Sombra roja
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
@@ -109,13 +127,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#F25041",
+    color: COLORS.light.primary,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 18,
-    color: "#F25041",
-    marginTop: 10,
+    color: COLORS.light.secondary,
+    fontWeight: 'bold',
+    marginTop: 17,
     textAlign: 'center',
   },
   calendarContainer: {
@@ -124,9 +143,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     borderWidth: 3,
-    borderColor: "#F25041",
+    borderColor: COLORS.light.primary,
     elevation: 5, // Sombra en Android
-    shadowColor: '#F25041', // Sombra roja
+    shadowColor: COLORS.light.primary, // Sombra roja
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
@@ -150,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    borderColor: "#F25041",
+    borderColor: COLORS.light.primary,
     borderWidth: 2,
   },
   modalText: {
@@ -160,7 +179,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: "#F25041",
+    backgroundColor: COLORS.light.primary,
     padding: 10,
     marginTop: 20,
     borderRadius: 10,
