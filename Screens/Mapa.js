@@ -8,6 +8,7 @@ import CategoryList from '../components/CategoryList';
 import TooltipModal from '../components/TooltipModal';
 import Lista from './Lista';
 import * as Location from 'expo-location';
+import COLORS from '../Constants/Colors';
 
 export default function Mapa({ navigation, setVisitedFallas, visitedFallas }) {
   const [vista, setVista] = useState('mapa');
@@ -125,7 +126,7 @@ export default function Mapa({ navigation, setVisitedFallas, visitedFallas }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.light.backgroundColor2,
   },
   contentContainer: {
     flex: 1,
