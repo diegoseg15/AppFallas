@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',  // Esto coloca la flecha y el título en una fila
     alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 30,
+    marginBottom: 30,
+    marginTop: 40,
   },
   arrowContainer: {
     marginRight: 10,
