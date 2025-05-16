@@ -4,6 +4,18 @@ import { Image, TouchableOpacity, View, Text, StyleSheet, Alert } from 'react-na
 import { useUsuario } from '../context/UsuarioContext'
 import COLORS from '../Constants/Colors'
 
+/**
+ * Componente de pantalla de perfil de usuario.
+ *
+ * Muestra la información del usuario, incluyendo su avatar y nombre, y un menú con opciones como editar perfil,
+ * ver información de la aplicación y cerrar sesión.
+ *
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.route - Objeto de navegación que contiene los parámetros de la ruta.
+ * @param {object} props.navigation - Objeto de navegación para cambiar de pantallas.
+ *
+ * @returns {JSX.Element} Vista del perfil de usuario con menú de opciones.
+ */
 export default function Profile({ route, navigation }) {
   const { usuario, setUsuario } = useUsuario()
 

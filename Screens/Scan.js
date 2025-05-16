@@ -5,6 +5,21 @@ import { useFallasContext } from '../context/FallasContext';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../Constants/Colors';
 
+/**
+ * Componente de escaneo de códigos QR.
+ * 
+ * Este componente utiliza la cámara del dispositivo para escanear códigos QR y buscar un elemento correspondiente
+ * en el contexto de fallas (VLCitems). Si encuentra el elemento, navega a la pantalla de detalle de la falla.
+ * 
+ * @component
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.navigation - Objeto de navegación de React Navigation.
+ * 
+ * @returns {JSX.Element|null} Vista de escaneo de QR o mensaje solicitando permisos de cámara.
+ * 
+ * @example
+ * <Scan navigation={navigation} />
+ */
 export default function Scan({ navigation }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);

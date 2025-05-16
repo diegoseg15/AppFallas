@@ -10,6 +10,20 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useUsuario } from "../context/UsuarioContext";
 
+/**
+ * Componente de pantalla de inicio de sesión.
+ * 
+ * @component
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.navigation - Objeto de navegación de React Navigation.
+ * 
+ * @returns {JSX.Element} Vista de la pantalla de login.
+ * 
+ * @description
+ * Permite al usuario ingresar su nombre de usuario y contraseña para acceder a la aplicación.
+ * Si el campo de usuario está vacío, muestra una alerta solicitando el ingreso del usuario.
+ * Al iniciar sesión correctamente, navega a la pantalla principal ("Main").
+ */
 export default function Login({ navigation }) {
 const { usuario, setUsuario } = useUsuario()
 

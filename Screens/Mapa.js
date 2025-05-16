@@ -10,6 +10,21 @@ import Lista from './Lista';
 import * as Location from 'expo-location';
 import COLORS from '../Constants/Colors';
 
+/**
+ * Componente principal de la pantalla de Mapa.
+ * 
+ * Muestra un mapa interactivo con la ubicación actual del usuario, permite buscar fallas por nombre o sección,
+ * filtrar por categorías y alternar entre vista de mapa y lista. También gestiona la visualización de tooltips
+ * con información detallada y el registro de fallas visitadas.
+ * 
+ * @component
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.navigation - Objeto de navegación de React Navigation.
+ * @param {function} props.setVisitedFallas - Función para actualizar la lista de fallas visitadas.
+ * @param {Array} props.visitedFallas - Lista de fallas que el usuario ha visitado.
+ * 
+ * @returns {JSX.Element} Vista de la pantalla de mapa con controles de búsqueda, filtrado y navegación.
+ */
 export default function Mapa({ navigation, setVisitedFallas, visitedFallas }) {
   const [vista, setVista] = useState('mapa');
   const [mostrarCategorias, setMostrarCategorias] = useState(false);

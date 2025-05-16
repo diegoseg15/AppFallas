@@ -2,6 +2,23 @@ import React from 'react'
 import MapView from 'react-native-maps'
 import Markers from './Markers'
 
+/**
+ * Componente que renderiza un mapa interactivo con marcadores filtrados por categoría y texto de búsqueda.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {React.RefObject} props.mapViewRef - Referencia al componente MapView.
+ * @param {Object} props.initialRegion - Región inicial del mapa (latitud, longitud, etc).
+ * @param {Object} props.newRegion - Nueva región del mapa (opcional, actualmente comentada).
+ * @param {Array<Object>} props.VLCitems - Lista de elementos para mostrar en el mapa.
+ * @param {Array<Object>} props.VLCitemsInfantil - Lista de elementos infantiles para mostrar en el mapa.
+ * @param {Function} props.setShowTooltip - Función para mostrar u ocultar el tooltip de un marcador.
+ * @param {Function} props.setDataItem - Función para establecer los datos del elemento seleccionado.
+ * @param {string} props.categoriaSeleccionada - Categoría seleccionada para filtrar los elementos.
+ * @param {string} props.searchText - Texto de búsqueda para filtrar los elementos.
+ *
+ * @returns {JSX.Element} El componente MapView con los marcadores filtrados.
+ */
 export default function MapViewComponent ({
   mapViewRef,
   initialRegion,

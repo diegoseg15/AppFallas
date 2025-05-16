@@ -17,6 +17,28 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import COLORS from "../Constants/Colors";
 
+/**
+ * Componente de lista que muestra elementos filtrados por categoría, búsqueda y distancia desde la ubicación actual.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Object} props.navigation - Objeto de navegación de React Navigation.
+ * @param {Array} props.VLCitems - Lista de elementos a mostrar.
+ * @param {string} props.categoriaSeleccionada - Categoría seleccionada para filtrar los elementos.
+ * @param {string} props.searchText - Texto de búsqueda para filtrar los elementos.
+ * @param {Object} [props.currentLocation] - Ubicación actual del usuario, con propiedades latitude y longitude.
+ *
+ * @returns {JSX.Element} Componente de lista renderizado.
+ *
+ * @example
+ * <Lista
+ *   navigation={navigation}
+ *   VLCitems={items}
+ *   categoriaSeleccionada="Todas"
+ *   searchText="falla"
+ *   currentLocation={{ latitude: 39.4699, longitude: -0.3763 }}
+ * />
+ */
 export default function Lista({
   navigation,
   VLCitems,

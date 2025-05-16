@@ -9,6 +9,18 @@ import {
 } from 'react-native'
 import { Feather, Ionicons } from '@expo/vector-icons'
 
+/**
+ * Componente que muestra la lista de fallas marcadas como visitadas.
+ * Permite visualizar información detallada de cada falla y quitarla de la lista de visitados.
+ *
+ * @component
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.navigation - Objeto de navegación para cambiar de pantalla.
+ * @param {Array<object>} props.visitedFallas - Lista de fallas que han sido marcadas como visitadas.
+ * @param {Function} props.setVisitedFallas - Función para actualizar la lista de fallas visitadas.
+ *
+ * @returns {JSX.Element} Vista con la lista de fallas visitadas o un mensaje si no hay ninguna.
+ */
 export default function Visited({
   navigation,
   visitedFallas,

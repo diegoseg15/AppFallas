@@ -9,6 +9,22 @@ import  Scan from './Scan'
 import { useUsuario } from '../context/UsuarioContext'
 import COLORS from '../Constants/Colors'
 
+/**
+ * Componente principal que define la navegación de pestañas inferiores (Bottom Tab Navigator) para la aplicación.
+ * 
+ * @function
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.route - Objeto de ruta proporcionado por React Navigation.
+ * @param {object} props.navigation - Objeto de navegación proporcionado por React Navigation.
+ * 
+ * @returns {JSX.Element} Navegador de pestañas con las siguientes pantallas: Inicio, Scan, Mapa, Visitado y Perfil.
+ * 
+ * @description
+ * - Utiliza `createBottomTabNavigator` para crear la navegación entre pantallas.
+ * - Personaliza los estilos de la barra de pestañas y los iconos según la pantalla seleccionada.
+ * - Comparte el estado `visitedFallas` entre las pantallas "Mapa" y "Visitado".
+ * - Recibe y pasa el usuario autenticado a las pantallas que lo requieren.
+ */
 export default function Main ({ route, navigation }) {
   const Tab = createBottomTabNavigator()
   const [visitedFallas, setVisitedFallas] = useState([])

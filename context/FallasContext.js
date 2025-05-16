@@ -5,6 +5,24 @@ const FallasContext = createContext();
 
 export const useFallasContext = () => useContext(FallasContext);
 
+/**
+ * Proveedor de contexto para las Fallas de Valencia.
+ * 
+ * Este componente utiliza React Context para proporcionar los datos de las Fallas mayores e infantiles
+ * obtenidos desde la API pública de Valencia. Al montar el componente, se realiza la carga de datos
+ * de ambas categorías y se almacenan en el estado local.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {React.ReactNode} props.children - Componentes hijos que tendrán acceso al contexto.
+ * 
+ * @returns {JSX.Element} Proveedor de contexto con los datos de las Fallas.
+ * 
+ * @example
+ * <FallasProvider>
+ *   <App />
+ * </FallasProvider>
+ */
 export const FallasProvider = ({ children }) => {
   const [VLCitems, setVLCitems] = useState([]);
   const [VLCitemsInfantil, setVLCitemsInfantil] = useState([]);

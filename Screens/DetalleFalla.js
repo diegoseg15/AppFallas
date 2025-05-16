@@ -3,6 +3,20 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } fr
 import { Ionicons } from '@expo/vector-icons';
 import { Linking} from 'react-native';
 
+/**
+ * Pantalla DetalleFalla
+ * 
+ * Muestra los detalles de una falla seleccionada, incluyendo información como nombre, sección, fallera, presidente, artista, lema, año de fundación y distintivo.
+ * Permite compartir la información de la falla a través de WhatsApp y marcarla como visitada.
+ * 
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.route - Objeto de navegación que contiene los parámetros de la ruta.
+ * @param {object} props.route.params - Parámetros pasados a la pantalla.
+ * @param {object} props.route.params.item - Objeto que representa la falla seleccionada.
+ * @param {object} props.navigation - Objeto de navegación para controlar la navegación entre pantallas.
+ * 
+ * @returns {JSX.Element} Componente que renderiza la pantalla de detalle de una falla.
+ */
 export default function DetalleFalla({ route, navigation }) {
   const { item } = route.params;
 

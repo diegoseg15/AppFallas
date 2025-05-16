@@ -3,6 +3,23 @@ import React from 'react';
 import { View, Text, Modal, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import COLORS from '../Constants/Colors';
 
+/**
+ * Modal de tooltip que muestra información detallada sobre una falla seleccionada,
+ * incluyendo imagen, nombre, lema, distancia desde la ubicación actual y opciones
+ * para marcar como visitada o ver más información.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Object} props.navigation - Objeto de navegación de React Navigation.
+ * @param {boolean} props.showTooltip - Indica si el modal debe mostrarse.
+ * @param {Function} props.closeTooltip - Función para cerrar el modal.
+ * @param {Object} props.dataItem - Objeto con la información de la falla seleccionada.
+ * @param {Object} props.currentLocation - Ubicación actual del usuario ({ latitude, longitude }).
+ * @param {Array} props.visitedFallas - Lista de fallas ya marcadas como visitadas.
+ * @param {Function} props.setVisitedFallas - Función para actualizar la lista de fallas visitadas.
+ *
+ * @returns {JSX.Element} Modal con la información de la falla y acciones disponibles.
+ */
 export default function TooltipModal({
   navigation,
   showTooltip,

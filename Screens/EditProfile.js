@@ -3,6 +3,20 @@ import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import { useUsuario } from '../context/UsuarioContext'
 
+/**
+ * Pantalla para editar el perfil del usuario.
+ *
+ * @component
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.route - Objeto de navegación que contiene los parámetros de la ruta.
+ * @param {object} props.route.params - Parámetros pasados a la pantalla.
+ * @param {object} props.navigation - Objeto de navegación para controlar la navegación entre pantallas.
+ *
+ * @returns {JSX.Element} Componente de la pantalla de edición de perfil.
+ *
+ * @example
+ * <EditProfile route={route} navigation={navigation} />
+ */
 export default function EditProfile({ route, navigation }) {
   const { item } = route.params
   const { usuario, setUsuario } = useUsuario()

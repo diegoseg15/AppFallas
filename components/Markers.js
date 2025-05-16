@@ -3,6 +3,16 @@ import { Image, Platform } from 'react-native'
 import { Marker } from 'react-native-maps'
 import COLORS from '../Constants/Colors'
 
+/**
+ * Componente que renderiza un marcador personalizado en el mapa.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Object} props.item - Objeto que contiene la información de la falla a mostrar en el marcador.
+ * @param {Function} props.setShowTooltip - Función para mostrar el tooltip al presionar el marcador.
+ * @param {Function} props.setDataItem - Función para establecer el item seleccionado en el estado.
+ * @returns {JSX.Element|null} El marcador a renderizar en el mapa o null si no hay item.
+ */
 export default function Markers ({ item, setShowTooltip, setDataItem }) {
   // Estado para controlar la visibilidad del tooltip
 

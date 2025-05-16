@@ -2,6 +2,15 @@ import React from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import COLORS from '../Constants/Colors'
 
+/**
+ * Componente de control segmentado que permite alternar entre las vistas "mapa" y "lista".
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {'mapa'|'lista'} props.vista - Vista actualmente seleccionada.
+ * @param {function} props.setVista - Función para actualizar la vista seleccionada.
+ * @returns {JSX.Element} Elemento JSX que representa el control segmentado.
+ */
 export default function SegmentedControl ({ vista, setVista }) {
   return (
     <View style={styles.segmentedControl}>

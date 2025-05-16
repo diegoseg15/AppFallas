@@ -11,12 +11,29 @@ import COLORS from '../Constants/Colors';
 
 const categorias = [
   { nombre: 'Todas', icono: 'view-list' },
-  { nombre: 'E', icono: 'star' },
-  { nombre: 'A', icono: 'campfire' },
+  { nombre: 'E', icono: 'star' }, //Especial
+  { nombre: 'A', icono: 'campfire' }, 
   { nombre: 'B', icono: 'fire' },
   { nombre: 'C', icono: 'candle' }
 ];
 
+/**
+ * Componente que muestra una lista de categorías con íconos personalizados.
+ * Permite seleccionar una categoría y alternar la visibilidad de la lista.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {boolean} props.mostrarCategorias - Indica si la lista de categorías debe mostrarse.
+ * @param {Function} props.toggleCategorias - Función para alternar la visibilidad de la lista de categorías.
+ * @param {Function} props.setCategoriaSeleccionada - Función para establecer la categoría seleccionada.
+ *
+ * @example
+ * <CategoryList
+ *   mostrarCategorias={mostrarCategorias}
+ *   toggleCategorias={toggleCategorias}
+ *   setCategoriaSeleccionada={setCategoriaSeleccionada}
+ * />
+ */
 export default function CategoryList({ mostrarCategorias, toggleCategorias, setCategoriaSeleccionada }) {
   const seleccionarCategoria = (categoria) => {
     setCategoriaSeleccionada(categoria);

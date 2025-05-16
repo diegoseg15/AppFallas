@@ -4,6 +4,26 @@ import { Calendar } from "react-native-calendars"; // Importamos el componente C
 import { useUsuario } from '../context/UsuarioContext'
 import COLORS from "../Constants/Colors"; // Asegúrate de tener este archivo con los colores definidos
 
+/**
+ * Componente principal de la pantalla de inicio de la aplicación Fallas App.
+ * 
+ * Muestra una bienvenida personalizada al usuario, un calendario interactivo con fechas marcadas de eventos importantes
+ * y un modal con información detallada del evento seleccionado.
+ * 
+ * @component
+ * @param {object} props - Propiedades recibidas por el componente.
+ * @param {object} props.route - Objeto de navegación de React Navigation.
+ * 
+ * @returns {JSX.Element} Vista de la pantalla principal con calendario de eventos y modal informativo.
+ * 
+ * @example
+ * <Home route={route} />
+ * 
+ * @description
+ * - Utiliza el contexto de usuario para mostrar el nombre del usuario.
+ * - Permite seleccionar fechas en el calendario para ver información de eventos relevantes.
+ * - Muestra un modal con la descripción del evento al seleccionar una fecha marcada.
+ */
 export default function Home({ route }) {
   const { usuario, setUsuario } = useUsuario()
 
