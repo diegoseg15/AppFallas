@@ -4,7 +4,8 @@ const COLORS = {
   light: {
     primary: '#F25041',
     secondary: '#F2B441',
-    accent: '#5852F2'
+    accent: '#5852F2',
+    backgroundColor2: '#F9F9F9'
   },
   dark: {
     primary: '#B22222',
