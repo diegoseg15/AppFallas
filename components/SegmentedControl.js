@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import COLORS from '../Constants/Colors'
 
 export default function SegmentedControl ({ vista, setVista }) {
   return (
@@ -32,18 +33,18 @@ export default function SegmentedControl ({ vista, setVista }) {
 const styles = StyleSheet.create({
   segmentedControl: {
     flexDirection: 'row',
-    backgroundColor: '#F25041',
+    backgroundColor: COLORS.light.primary,
     borderRadius: 25,
     padding: 4,
     width: 200,
     alignSelf: 'center',
-    marginTop: 5
+    marginTop: 10
   },
   button: {
     flex: 1,
     paddingVertical: 5,
     alignItems: 'center',
-    backgroundColor: '#F25041',
+    backgroundColor:  COLORS.light.primary,
     borderRadius: 20
   },
   activeButton: {
@@ -55,6 +56,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   activeText: {
-    color: '#F25041'
+    color:  COLORS.light.primary
   }
 })
