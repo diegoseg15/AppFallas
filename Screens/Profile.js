@@ -1,17 +1,22 @@
 import { Ionicons } from '@expo/vector-icons'
-import React, { act } from 'react'
-import { Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import React, { act, useEffect } from 'react'
+import { Image, TouchableOpacity, View, Text, StyleSheet, Alert } from 'react-native'
+import { useUsuario } from '../context/UsuarioContext'
+import COLORS from '../Constants/Colors'
 
-export default function Profile ({ route }) {
-  const { usuario } = route.params
+export default function Profile({ route, navigation }) {
+  const { usuario, setUsuario } = useUsuario()
+
+  useEffect(() => {
+    if (route.params?.updatedUsuario) {
+      setUsuario(route.params.updatedUsuario)
+    }
+  }, [route.params?.updatedUsuario])
 
   const menu = [
     { title: 'Editar Perfíl', icon: 'person', screen: 'EditProfile' },
-    { title: 'Ubicación', icon: 'location', screen: 'Location' },
-    { title: 'Notificaciones', icon: 'notifications', action: 'notifications' },
-    { title: 'Favoritos', icon: 'heart', screen: 'Favorites' },
-    { title: 'Contraseña', icon: 'key', screen: 'password' },
-    { title: 'Idioma', icon: 'language', action: 'language' }
+    { title: 'Acerca de (v1.0.0)', icon: 'information-circle', action: 'about' },
+    { title: 'Cerrar Sesión', icon: 'log-out', action: 'logout' }
   ]
   return (
     <View>
@@ -28,7 +33,18 @@ export default function Profile ({ route }) {
         {menu.map(
           (item, index) =>
             index <= 1 && (
-              <TouchableOpacity key={index} style={styles.menuItem}>
+              <TouchableOpacity
+                key={index}
+                style={styles.menuItem}
+                onPress={() =>
+                  item.screen
+                    ? navigation.navigate(item.screen, { title: item.title, usuario, setUsuario })
+                    : item.action === 'about' ? Alert.alert(
+                      'Acerca de',
+                      'Esta aplicación te indica los lugares con un mapa de las Fallas de Valencia.\n\nDesarrollada por Diego Segovia y Marco Rodas, estudiantes de la Universidad de Valencia.\n\nVersión: 1.0.0\nCódigo abierto.'
+                    ) : console.log(item.action)
+
+                }>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Ionicons name={item.icon} style={styles.icon} />
                   <Text style={styles.menuItemText}>{item.title}</Text>
@@ -48,7 +64,7 @@ export default function Profile ({ route }) {
                 onPress={() =>
                   item.screen
                     ? navigation.navigate(item.screen, { title: item.title })
-                    : console.log(item.action)
+                    : item.action === 'logout' ? navigation.navigate('Login', { usuario: '' }) : console.log(item.action)
                 }
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -79,10 +95,11 @@ const styles = StyleSheet.create({
   user: {
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: "white"
   },
   menuProfile: {
-    backgroundColor: '#F2B441',
+    backgroundColor: COLORS.light.secondary,
     flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: 25,
