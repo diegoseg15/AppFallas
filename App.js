@@ -3,7 +3,7 @@ import Login from './Screens/Login';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from './Screens/Home';
-import NavigationAppDemo from './Screens/NavigationAppDemo';
+
 import Main from './Screens/Main';
 import Lista from './Screens/Lista';
 import DetalleFalla from './Screens/DetalleFalla';
