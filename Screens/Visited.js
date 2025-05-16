@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { Feather, Ionicons } from '@expo/vector-icons'
 
-export default function Visited ({
+export default function Visited({
   navigation,
   visitedFallas,
   setVisitedFallas
@@ -21,9 +21,22 @@ export default function Visited ({
   return (
     <ScrollView style={styles.container}>
       {visitedFallas.length === 0 ? (
-        <Text style={{ textAlign: 'center', marginTop: 40 }}>
-          Aún no has marcado ninguna falla como visitada.
-        </Text>
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 20,
+          marginTop: 60,
+          paddingHorizontal: 20
+        }}>
+          <Ionicons name="alert-circle-outline" size={60} color="#F25041" style={{ marginBottom: 20 }} />
+          <Text style={{ fontSize: 18, fontWeight: '500', textAlign: 'center', color: '#333' }}>
+            Aún no has marcado ninguna falla como visitada.
+          </Text>
+          <Text style={{ fontSize: 14, textAlign: 'center', color: '#666', marginTop: 8 }}>
+            Cuando lo hagas, aparecerán aquí con su información y ubicación.
+          </Text>
+        </View>
       ) : (
         visitedFallas.map(falla => (
           <View key={falla.id_falla} style={styles.card}>
@@ -82,7 +95,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: 5
   },
   title: {
     fontSize: 18,
@@ -104,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   button: {
-    marginTop: 12,
+    marginTop: 20,
     backgroundColor: '#5852F2',
     padding: 8,
     borderRadius: 4,
