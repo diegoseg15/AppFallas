@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     borderRadius: 8,
-    marginTop: 8
+    marginTop: 8,
+    marginBottom: 8
   },
   info: {
     color: 'gray',
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   button: {
-    marginTop: 20,
+    marginTop: 18,
     backgroundColor: '#5852F2',
     padding: 8,
     borderRadius: 4,
