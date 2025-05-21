@@ -17,7 +17,6 @@ Aplicación móvil desarrollada con **React Native** para disfrutar al máximo d
 
 - [React Native](https://reactnative.dev/)
 - [Expo](https://expo.dev/)
-- [Firebase](https://firebase.google.com/) para autenticación y base de datos
 - [React Navigation](https://reactnavigation.org/)
 - [react-native-maps](https://github.com/react-native-maps/react-native-maps)
 
@@ -42,9 +41,9 @@ npm install
 npx expo start
 ```
 
-## 🤝 Contribuciones
+## 👨‍💻 Autores
 
-¡Las contribuciones son bienvenidas! Abre un issue o envía un pull request.
+Proyecto desarrollado por **Diego Segovia** y **Marco Rodas**.
 
 ## 📄 Licencia
 
