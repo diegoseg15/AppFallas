@@ -42,10 +42,6 @@ npm install
 npx expo start
 ```
 
-## 📸 Capturas
-
-> *(Agrega aquí algunas imágenes de la app en funcionamiento si lo deseas)*
-
 ## 🤝 Contribuciones
 
 ¡Las contribuciones son bienvenidas! Abre un issue o envía un pull request.
